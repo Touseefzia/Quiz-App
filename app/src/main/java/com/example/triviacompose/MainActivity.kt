@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.triviacompose.app_constants.ApiPreferences
 import com.example.triviacompose.app_constants.Category
 import com.example.triviacompose.app_constants.Difficulty
 import com.example.triviacompose.app_constants.Type
@@ -60,7 +61,7 @@ fun MainView(mainViewModel: MainViewModel) {
             CoroutineScope(Dispatchers.IO).launch {
                 mainViewModel.getTillDatePoints().collectLatest {
                     Log.e("MainActivity", it.toString())
-                    it?.let { mainViewModel.totalScoreInDb.value = it.toString() }
+                    it?.let { ApiPreferences.totalScoreInDb.value = it.toString() }
                 }
             }
             item {
@@ -71,10 +72,10 @@ fun MainView(mainViewModel: MainViewModel) {
                         .padding(vertical = 25.dp),
                 ) {
 
-                    Text(text = "Your Till Date Score ${mainViewModel.totalScoreInDb.value}")
+                    Text(text = "Your till date score: ${ApiPreferences.totalScoreInDb.value}")
                     SelectionDropdownMenuBox(
                         Category.values(),
-                        itemState = mainViewModel.selectedQuestionCategory,
+                        itemState = ApiPreferences.selectedQuestionCategory,
                         content = { item, itemState, expanded ->
                             DropdownMenuItem(
                                 text = { Text(text = item.value) },
@@ -85,11 +86,11 @@ fun MainView(mainViewModel: MainViewModel) {
                             )
                         },
                         label = { stateValue -> DropDownLabel(stateValue.value.value) },
-                        isExpanded = mainViewModel.expandedCategory
+                        isExpanded = ApiPreferences.expandedCategory
                     )
                     SelectionDropdownMenuBox(
                         Difficulty.values(),
-                        itemState = mainViewModel.selectedQuestionDifficulty,
+                        itemState = ApiPreferences.selectedQuestionDifficulty,
                         content = { item, itemState, expanded ->
                             DropdownMenuItem(
                                 text = { Text(text = item.difficulty) },
@@ -100,11 +101,11 @@ fun MainView(mainViewModel: MainViewModel) {
                             )
                         },
                         label = { stateValue -> DropDownLabel(stateValue.value.difficulty) },
-                        isExpanded = mainViewModel.expandedDifficulty
+                        isExpanded = ApiPreferences.expandedDifficulty
                     )
                     SelectionDropdownMenuBox(
                         Type.values(),
-                        itemState = mainViewModel.selectedQuestionType,
+                        itemState = ApiPreferences.selectedQuestionType,
                         content = { item, itemState, expanded ->
                             DropdownMenuItem(
                                 text = { Text(text = item.type) },
@@ -115,7 +116,7 @@ fun MainView(mainViewModel: MainViewModel) {
                             )
                         },
                         label = { stateValue -> DropDownLabel(stateValue.value.type) },
-                        isExpanded = mainViewModel.expandedType
+                        isExpanded = ApiPreferences.expandedType
                     )
                 }
             }
@@ -123,7 +124,7 @@ fun MainView(mainViewModel: MainViewModel) {
                 Button(
                     modifier = Modifier.height(70.dp),
                     onClick = {
-                        mainViewModel.isQuickMode.value = false
+                        ApiPreferences.isQuickMode.value = false
                         mContext.startActivity(Intent(mContext, QuizActivity::class.java))
                     }) {
                     Text(text = "Start Normal Quiz")
@@ -131,10 +132,10 @@ fun MainView(mainViewModel: MainViewModel) {
                  Button(
                          modifier = Modifier.height(70.dp).padding(top = 15.dp),
                          onClick = {
-                             mainViewModel.isQuickMode.value = true
-                             mainViewModel.selectedQuestionType.value = Type.ANY
-                             mainViewModel.selectedQuestionDifficulty.value = Difficulty.ANY
-                             mainViewModel.selectedQuestionCategory.value = Category.ANY
+                             ApiPreferences.isQuickMode.value = true
+                             ApiPreferences.selectedQuestionType.value = Type.ANY
+                             ApiPreferences.selectedQuestionDifficulty.value = Difficulty.ANY
+                             ApiPreferences.selectedQuestionCategory.value = Category.ANY
                              mContext.startActivity(Intent(mContext, QuizActivity::class.java))
 
                          }) {
@@ -191,55 +192,3 @@ fun DropDownLabel(
         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = true) },
     )
 }
-
-
-
-/*@Composable
-fun PlantCard(question: QuestionModel) {
-
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(vertical = 25.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    "Plants in Cosmetics ${question.question}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    TriviaComposeTheme {
-        Greeting("Android")
-    }
-}
-
-DropdownMenuItem(
-                        text = { Text(text = item.value) },
-                        onClick = {
-                            selectedText = item
-                            expanded = false
-                            Toast.makeText(context, item.value, Toast.LENGTH_SHORT).show()
-                        })
-                        */
-
-//TextField(
-//value = state.value.toString(),
-//onValueChange = { },
-//readOnly = true,
-//trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value) },
-////                modifier = Modifier.menuAnchor()
-//)

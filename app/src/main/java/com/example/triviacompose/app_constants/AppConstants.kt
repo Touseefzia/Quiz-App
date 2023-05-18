@@ -1,5 +1,22 @@
 package com.example.triviacompose.app_constants
 
+import androidx.compose.runtime.mutableStateOf
+
+object ApiPreferences {
+
+     var selectedQuestionType = mutableStateOf(Type.ANY)
+     var expandedType = mutableStateOf(false)
+
+     var selectedQuestionDifficulty = mutableStateOf(Difficulty.ANY)
+     var expandedDifficulty = mutableStateOf(false)
+
+     var selectedQuestionCategory = mutableStateOf(Category.ANY)
+     var expandedCategory = mutableStateOf(false)
+
+     var isQuickMode = mutableStateOf(false)
+
+     var totalScoreInDb = mutableStateOf("")
+}
 enum class Point (val difficulty: String, val value: Int){
      EASY( "easy", 1 ),
      MEDIUM( "medium", 2 ),
